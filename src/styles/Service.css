@@ -1,0 +1,71 @@
+.serviceContainer {
+    display: flex;
+    margin: 3rem;
+    height: 40rem;
+}
+
+.leftcontainer {
+    background-color: white;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.serviceContainer h2 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.leftitems {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+}
+
+.leftitems>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.serviceContainer h4 {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.rightcontainer {
+    margin-left: 1rem;
+    width: 50%;
+    height: 39rem;
+}
+
+.topbox {
+    background-color: white;
+    margin-bottom: 1rem;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.bottombox {
+    background-color: white;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.serviceContainer .boxShadow:hover {
+    box-shadow: 0rem 0rem .5rem 0rem rgb(132 144 255/30%);
+    transition: box-shadow .25s ease;
+}

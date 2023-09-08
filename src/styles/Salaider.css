@@ -1,0 +1,72 @@
+.carousel {
+    padding: 1rem;
+    margin: 3rem;
+    background: white;
+}
+
+.carousel .image {
+    width: 50%;
+}
+
+.carousel .carousel-caption {
+    color: black;
+    background: white;
+    width: 49%;
+    height: 80%;
+    left: 51%;
+}
+
+.carousel .tags {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #FF6900;
+    margin-bottom: 2rem;
+}
+
+.carousel .name {
+    font-weight: 600;
+    font-size: 3.2rem;
+    margin-bottom: 3rem;
+}
+
+.carousel .description {
+    padding: 0 5rem;
+    font-weight: 400;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #434343;
+}
+
+.carousel .button {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #434343;
+}
+
+.carousel-control-prev {
+    left: 70%;
+    top: 80%;
+    height: 3rem;
+    width: 3.1rem;
+    background-color: black;
+    border-radius: 20px;
+}
+
+.carousel-control-next {
+    right: 20rem;
+    top: 80%;
+    height: 3rem;
+    width: 3.1rem;
+    background-color: black;
+    border-radius: 20px;
+}
+
+.carousel .carousel-indicators {
+    right: 4rem;
+    justify-content: end;
+}
+
+.carousel .carousel-indicators>button {
+    background-color: black;
+}
