@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
-// import Prenavbar from "./components/Prenavbar";
+import Prenavbar from "./components/Prenavbar";
 import Navbar from "./components/Navbar";
 import data from "./data/data.json";
 import SiteBanner from "./components/SiteBanner.js";
@@ -13,7 +13,7 @@ import FooterSection from "./components/FooterSection.js";
 function App() {
   return (
     <Router>
-      {/* <Prenavbar /> */}
+      <Prenavbar />
       <Navbar />
       <SiteBanner HomeSiteBanner={data.hotAccessories.HomeSiteBanner} />
       <SpecialOffer specialItems={data.hotAccessories.specialItems} />
