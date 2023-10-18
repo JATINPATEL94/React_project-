@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link  } from "react-router-dom";
 import miLogo from "../img/mi-logo.png";
 import miHomeLogo from "../img/mi-home-logo.png";
 import searchIcon from "../img/icons8-search.png";
@@ -9,6 +9,7 @@ import "../styles/Navbar.css";
 
 import { useState, useEffect } from "react";
 import data from "../data/data.json";
+
 
 const Navbar = () => {
   const [navbarLinks, setAdditionalLinks] = useState([]);

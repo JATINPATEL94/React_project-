@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/footer.css";
+import { Link  } from "react-router-dom";
 
 const FooterSection = ({ footer }) => {
   return (
@@ -8,31 +9,31 @@ const FooterSection = ({ footer }) => {
         <div>
           <p>support</p>
           {footer.support.map((items, index) => (
-            <a href="{items.url}" key={items.name}>{items.name}</a>
+            <Link to={items.url} key={items.name}>{items.name}</Link>
           ))}
         </div>
         <div>
           <p>shop And Learn</p>
           {footer.shopAndLearn.map((items, index) => (
-            <a href="{items.url}" key={items.name}>{items.name}</a>
+            <Link to={items.url} key={items.name}>{items.name}</Link>
           ))}
         </div>
         <div>
           <p>retail Store</p>
           {footer.retailStore.map((items, index) => (
-            <a href="{items.url}" key={items.name}>{items.name}</a>
+            <Link to={items.url} key={items.name}>{items.name}</Link>
           ))}
         </div>
         <div>
           <p>about US</p>
           {footer.aboutUS.map((items, index) => (
-            <a href="{items.url}" key={items.name}>{items.name}</a>
+            <Link to={items.url} key={items.name}>{items.name}</Link>
           ))}
         </div>
         <div>
           <p>contact Us</p>
           {footer.contactUs.map((items, index) => (
-            <a href="{items.url}" key={items.name}>{items.name}</a>
+            <Link to={items.url} key={items.name}>{items.name}</Link>
           ))}
         </div>
       </div>

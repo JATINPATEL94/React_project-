@@ -7,12 +7,13 @@
 }
 
 .footer {
-    width: 100%;
+    width: 80%;
     display: flex;
-    padding: 4rem 15rem;
+    padding: 4rem 0;
     background: #191919;
     color: white;
     justify-content: space-between;
+    gap: 2rem;
 }
 
 .footer>div {

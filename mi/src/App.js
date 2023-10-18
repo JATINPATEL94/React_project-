@@ -1,26 +1,28 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
-import Prenavbar from "./components/Prenavbar";
+// import Prenavbar from "./components/Prenavbar";
 import Navbar from "./components/Navbar";
 import data from "./data/data.json";
-import SiteBanner from "./components/SiteBanner.js";
-import SpecialOffer from "./components/SpecialOffer.js";
-import Salaider from "./components/Salaider.js";
 import Service from "./components/Service.js";
 import FooterSection from "./components/FooterSection.js";
+import HomePage from "./components/HomePage";
 
 function App() {
   return (
+    <>
     <Router>
-      <Prenavbar />
+      {/* <Prenavbar /> */}
       <Navbar />
-      <SiteBanner HomeSiteBanner={data.hotAccessories.HomeSiteBanner} />
-      <SpecialOffer specialItems={data.hotAccessories.specialItems} />
-      <Salaider CarouselOffers={data.hotAccessories.CarouselOffers} />
+      <Routes>
+        <Route path="/" element={< HomePage />} />
+        <Route path="/Discover" element={< Service/>} />
+      </Routes>
       <Service />
       <FooterSection footer={data.footer} />
     </Router>
+     
+    </>
   );
 }
 
