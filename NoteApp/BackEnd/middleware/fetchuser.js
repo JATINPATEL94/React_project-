@@ -8,9 +8,9 @@ const fetchuser = (req, res, next) => {
     res.status(401).send({ error: "Please Authenticate Using A Valid Tokon" });
   }
   try {
-    const data = jwt.verify(tokon, JWT_SECRET);
+    const data = jwt.verify(tokon, JWT_SECRET); // decoded tokon using JWT.verify function. 
     req.user = data.user;
-    next();
+    next();   //next() is used to pass control to the next middleware or route handler.
   } catch (error) {
     res.status(401).send({error: "Please Authenticate Using A Valid Tokon"})
   }

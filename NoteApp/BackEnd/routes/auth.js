@@ -33,7 +33,7 @@ router.post(
           .json({ error: "Sorry a User With This Email Already Exist." });
       }
 
-      // Generate secure Password using bcrypt
+      // Generate secure Password using bcrypt for New user
       const salt = await bcrypt.genSalt(10);
       const securePassword = await bcrypt.hash(req.body.password, salt);
 
@@ -44,7 +44,7 @@ router.post(
         password: securePassword,
       });
 
-      // Generate secure token using jsonwebtoken(JWT)
+      // Generate secure token using jsonwebtoken(JWT) for new user
       const data = {
         user: {
           id: user.id,
@@ -115,10 +115,11 @@ router.post(
 );
 
 // Route 3 :Get Logdin User Details  using: POST "/api/auth/getuser". Login required
-router.post("/getuser", fetchuser ,async (req, res) => {
+
+router.post("/getuser", fetchuser ,async (req, res) => { // fetchuser is Middleware 
   
   try {
-    userid = req.user.id;
+    const userid = req.user.id;   // req.user is come from fetchuser middleware.
     const user = await User.findById(userid).select("-password");
     res.send(user)
   } catch (error) {
