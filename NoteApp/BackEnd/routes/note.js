@@ -53,20 +53,50 @@ router.put("/updatenote/:id", // "/:id"  is  parameter.its referr specific note 
   fetchuser,
   async (req, res) => {
     const { title, description, tag } = req.body;
+    try {
+      // Creact newNote object and asian values to newNote object.
+      const newNote = {};
+      if (title) {
+        newNote.title = title;
+      }
+      if (description) {
+        newNote.description = description;
+      }
+      if (tag) {
+        newNote.tag = tag;
+      }
 
-    // Creact newNote object and asian values to newNote object.
-    const newNote = {};
-    if (title) {
-      newNote.title = title;
-    }
-    if (description) {
-      newNote.description = description;
-    }
-    if (tag) {
-      newNote.tag = tag;
-    }
+      // find a note witch wont to updead.
+      let note = await Note.findById(req.params.id);
+      if (!note) {
+        return res.status(404).send("Not Found");
+      }
 
-    // find a note witch wont to updead.
+      // cheking a user own this note.
+      if (note.user.toString() !== req.user.id) {
+        return res.status(401).send("Not Allowed");
+      }
+
+      // updead a note if user own this.
+      note = await Note.findByIdAndUpdate(
+        req.params.id, // "req.params.id" is identifier of the specific note
+        { $set: newNote }, //updates the document with the fields and values in the newNote object.
+        { new: true } // This option specifies that the method should return the updated document rather than the original one.
+      );
+      res.json({ note });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+
+// Route 4 : Deleting An existing Note using: DELETE "/api/note/deletenote/:id". Login required
+router.delete("/deletenote/:id",
+  fetchuser, async (req, res) => {
+  const { title, description, tag } = req.body;
+  try {
+    // find a note witch wont to delete.
     let note = await Note.findById(req.params.id);
     if (!note) {
       return res.status(404).send("Not Found");
@@ -77,35 +107,13 @@ router.put("/updatenote/:id", // "/:id"  is  parameter.its referr specific note 
       return res.status(401).send("Not Allowed");
     }
 
-    // updead a note if user own this.
-    note = await Note.findByIdAndUpdate(
-      req.params.id, // "req.params.id" is identifier of the specific note
-      { $set: newNote }, //updates the document with the fields and values in the newNote object.
-      { new: true } // This option specifies that the method should return the updated document rather than the original one.
-    );
-    res.json({ note });
+    // delete a note if user own this note.
+    note = await Note.findByIdAndDelete(req.params.id); // "req.params.id" is identifier of the specific note.
+    res.json({ success: "Your Note has benn deleted." });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
   }
-);
-
-// Route 4 : Deleting An existing Note using: DELETE "/api/note/deletenote/:id". Login required
-router.delete("/deletenote/:id",
-  fetchuser, async (req, res) => {
-  const { title, description, tag } = req.body;
-
-  // find a note witch wont to delete.
-  let note = await Note.findById(req.params.id);
-  if (!note) {
-    return res.status(404).send("Not Found");
-  }
-
-  // cheking a user own this note.
-  if (note.user.toString() !== req.user.id) {
-    return res.status(401).send("Not Allowed");
-  }
-
-  // delete a note if user own this note.
-  note = await Note.findByIdAndDelete(req.params.id); // "req.params.id" is identifier of the specific note.
-  res.json({ success: "Your Note has benn deleted." });
 });
 
 module.exports = router;

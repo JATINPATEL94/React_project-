@@ -1,5 +1,5 @@
 <!-- install react -->
-npx create-react-app noteapp
+npx create-react-app noteapp        // " rmdir /s /q noteapp " for delete reactapp
 
 <!-- creact backend -->
 npm init
@@ -25,3 +25,6 @@ npm install bcrypt
 <!-- JWT is a compact, self-contained data format used for secure information exchange, typically for user authentication and authorization -->
 npm install jsonwebtoken
 
+<!-- install Tailwindcss for project css -->
+npx tailwindcss init
+npm install -D tailwindcss
