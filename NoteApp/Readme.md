@@ -1,6 +1,6 @@
 <!-- install react -->
 npx create-react-app noteapp        // " rmdir /s /q noteapp " for delete reactapp
-
+npm install react-router-dom 
 <!-- creact backend -->
 npm init
 package name: noteapp-backend
