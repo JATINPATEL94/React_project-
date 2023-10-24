@@ -1,10 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
+import NoteContext from "../context/notes/noteContext";
 
 const AddNote = () => {
+  const context = useContext(NoteContext);
+  const { addNote, tagColor } = context;
+  const [note, setNote] = useState({
+    title: "",
+    description: "",
+    tag: "General",
+  });
+  const [tagSelected, setTagSelected] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const onChange = (e) => {
+    const { name, value, type } = e.target;
+    if (name === "tag") {
+      setTagSelected(true);
+    }
+    if (type === "radio") {
+      setNote({ ...note, tag: value });
+    } else {
+      setNote({ ...note, [name]: value });
+      // setNote({...note,[e.target.name]:e.target.value})
+    }
+  };
   const toggleOpen = () => {
     setIsOpen(!isOpen);
+  };
+  const handleClick = (e) => {
+    e.preventDefault();
+    addNote(note.title, note.description, note.tag);
   };
 
   return (
@@ -37,6 +62,7 @@ const AddNote = () => {
                       autoComplete="title"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-100 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="Enter Note Title."
+                      onChange={onChange}
                     />
                   </div>
                 </div>
@@ -56,6 +82,7 @@ const AddNote = () => {
                     rows={5}
                     className="block w-full p-2 rounded-md border-0 py-1.5 bg-transparent text-gray-100 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     defaultValue={""}
+                    onChange={onChange}
                   />
                 </div>
               </div>
@@ -99,157 +126,76 @@ const AddNote = () => {
                     className="p-3 max-h-40 overflow-y-scroll space-y-1 text-sm text-gray-700 dark:text-gray-200"
                     aria-labelledby="dropdownRadioBgHoverButton"
                   >
-                    <li>
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          checked
-                          id="default-radio-4"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="default-radio-4"
-                          className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          Genral
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          // checked
-                          id="default-radio-5"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="default-radio-5"
-                          className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          Default state
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          id="default-radio-6"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="default-radio-6"
-                          className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          Default radio
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          id="default-radio-4"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="default-radio-4"
-                          className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          Default radio
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          //   checked
-                          id="default-radio-5"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="default-radio-5"
-                          className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          Default state
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          id="default-radio-6"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="default-radio-6"
-                          className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          Default radio
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          //   checked
-                          id="default-radio-5"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="default-radio-5"
-                          className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          Default state
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          id="default-radio-6"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="default-radio-6"
-                          className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          Default radio
-                        </label>
-                      </div>
-                    </li>
+                    {/* tag from context */}
+                    {tagColor.map((tagData, index) => (
+                      <li key={index}>
+                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover-bg-gray-600">
+                          <input
+                            onClick={onChange}
+                            id={`default-radio-${index}`}
+                            type="radio"
+                            value={tagData.tag}
+                            name="tag"
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                          />
+                          <label
+                            htmlFor={`default-radio-${index}`}
+                            className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
+                          >
+                            {tagData.tag}
+                          </label>
+                        </div>
+                      </li>
+                    ))}
+
+                      {/* General */}
+                      {/* <li>
+                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                          <input
+                            // defaultChecked
+                            onClick={onChange}
+                            id="default-radio-1"
+                            type="radio"
+                            value="General"
+                            name="tag"
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                          />
+                          <label
+                            htmlFor="default-radio-1"
+                            className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
+                          >
+                            Genral
+                          </label>
+                        </div>
+                      </li> */}
+                      {/* Personal */}
+                      {/* <li>
+                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                          <input
+                            onClick={onChange}
+                            id="default-radio-2"
+                            type="radio"
+                            value="Personal"
+                            name="tag"
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                          />
+                          <label
+                            htmlFor="default-radio-2"
+                            className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
+                          >
+                            Personal
+                          </label>
+                        </div>
+                      </li> */}
+
                   </ul>
                 </div>
               </div>
               {/* Upload File */}
               <div className="col-span-full">
-                <label
-                  htmlFor="cover-photo"
-                  className="block text-sm font-medium leading-6 text-gray-100"
-                >
-                  If You wont A To Upload A File or Photos.
-                </label>
+                <h5 className="block text-sm font-medium leading-6 text-gray-100">
+                  If You wont A To Upload A File or Photos.{" "}
+                </h5>
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-100/25 px-6 py-10">
                   <div className="text-center">
                     <PhotoIcon
@@ -289,7 +235,9 @@ const AddNote = () => {
             Cancel
           </button>
           <button
+            onClick={handleClick}
             type="submit"
+            disabled={!tagSelected}
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Save
