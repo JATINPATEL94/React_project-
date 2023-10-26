@@ -5,31 +5,44 @@ import NoteContext from "../context/notes/noteContext";
 const AddNote = () => {
   const context = useContext(NoteContext);
   const { addNote, tagColor } = context;
+  // toggle tag button
+  const [tagSelected, setTagSelected] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+  // declare note state
   const [note, setNote] = useState({
     title: "",
     description: "",
-    tag: "General",
+    tag: "",
+    Color: "",
   });
-  const [tagSelected, setTagSelected] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const onChange = (e) => {
     const { name, value, type } = e.target;
+    // toggle tags button
     if (name === "tag") {
+      setIsOpen(!isOpen);
       setTagSelected(true);
     }
+    // updead State of note
     if (type === "radio") {
-      setNote({ ...note, tag: value });
+      const color = e.target.getAttribute("data-color");
+      setNote({
+        ...note,
+        tag: value,
+        Color: color,
+        // [name]: value,
+      });
     } else {
       setNote({ ...note, [name]: value });
       // setNote({...note,[e.target.name]:e.target.value})
     }
   };
-  const toggleOpen = () => {
-    setIsOpen(!isOpen);
-  };
+  // submit handle
   const handleClick = (e) => {
     e.preventDefault();
-    addNote(note.title, note.description, note.tag);
+    addNote(note.title, note.description, note.tag, note.Color);
   };
 
   return (
@@ -90,13 +103,14 @@ const AddNote = () => {
               <div className="flex justify-center align-middle w-fit relative">
                 {/* Droupdown Buttone */}
                 <button
+                  type="button"
                   onClick={toggleOpen}
+                  // disabled={tagSelected}
                   id="dropdownRadioBgHoverButton"
                   data-dropdown-toggle="dropdownRadioBgHover"
                   className="text-white bg-transparent  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 w-max h-fit border py-2.5 text-center inline-flex items-center relative"
-                  type="button"
                 >
-                  Select Tag{" "}
+                  Select Tag
                   <svg
                     className="w-2.5 h-2.5 ml-2.5"
                     aria-hidden="true"
@@ -113,7 +127,6 @@ const AddNote = () => {
                     />
                   </svg>
                 </button>
-
                 {/* Dropdown menu  */}
                 <div
                   id="dropdownRadioBgHover"
@@ -129,65 +142,27 @@ const AddNote = () => {
                     {/* tag from context */}
                     {tagColor.map((tagData, index) => (
                       <li key={index}>
-                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover-bg-gray-600">
+                        <div className="flex items-center justify-start p-2 rounded hover:bg-gray-100 dark:hover-bg-gray-600">
                           <input
                             onClick={onChange}
                             id={`default-radio-${index}`}
                             type="radio"
                             value={tagData.tag}
                             name="tag"
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            data-color={
+                              tagData.Color
+                            } /* Assign Color into a data attribute */
+                            className="w-4 h-4   bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                           />
                           <label
                             htmlFor={`default-radio-${index}`}
-                            className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
+                            className={`${tagData.Color}w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300`}
                           >
                             {tagData.tag}
                           </label>
                         </div>
                       </li>
                     ))}
-
-                      {/* General */}
-                      {/* <li>
-                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                          <input
-                            // defaultChecked
-                            onClick={onChange}
-                            id="default-radio-1"
-                            type="radio"
-                            value="General"
-                            name="tag"
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                          />
-                          <label
-                            htmlFor="default-radio-1"
-                            className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                          >
-                            Genral
-                          </label>
-                        </div>
-                      </li> */}
-                      {/* Personal */}
-                      {/* <li>
-                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                          <input
-                            onClick={onChange}
-                            id="default-radio-2"
-                            type="radio"
-                            value="Personal"
-                            name="tag"
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                          />
-                          <label
-                            htmlFor="default-radio-2"
-                            className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                          >
-                            Personal
-                          </label>
-                        </div>
-                      </li> */}
-
                   </ul>
                 </div>
               </div>
@@ -226,14 +201,8 @@ const AddNote = () => {
             </div>
           </div>
         </div>
-        {/* Note Save or Cancle Button*/}
+        {/* Note Save  Button*/}
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
-            type="button"
-            className="text-sm font-semibold leading-6 text-gray-100"
-          >
-            Cancel
-          </button>
           <button
             onClick={handleClick}
             type="submit"

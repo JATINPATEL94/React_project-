@@ -5,8 +5,7 @@ const fetchuser = require("../middleware/fetchuser");
 const { validationResult, body } = require("express-validator");
 
 // Route 1 :Get All the Note using: GET "/api/note/fetchallnote". Login required
-router.get("/fetchallnote",
-  fetchuser, async (req, res) => {
+router.get("/fetchallnote", fetchuser, async (req, res) => {
   // fetchuser is a middleware.
   try {
     // get the all note from user
@@ -19,17 +18,19 @@ router.get("/fetchallnote",
 });
 
 // Route 2 :Add A New  Note using: POST "/api/note/addnote". Login required
-router.post("/addnote",
+router.post(
+  "/addnote",
   fetchuser, // fetchuser is a middleware.
   [
     body("title", "title Must Be Minimum 3 Characters").isLength({ min: 3 }),
     body("description", "Description Must Be Minimum 5 Characters").isLength({
       min: 5,
     }),
+    body("Color", "tag Color Error").isLength({ min: 2 }),
   ] /*for validation do code in []array */,
   async (req, res) => {
     try {
-      const { title, description, tag } = req.body;
+      const { title, description, tag, Color } = req.body;
 
       // if any error retun bad Request and error.
       const error = validationResult(req);
@@ -38,7 +39,13 @@ router.post("/addnote",
       }
 
       // Create and Save A New Note.
-      const note = new Note({ title, description, tag, user: req.user.id });
+      const note = new Note({
+        title,
+        description,
+        tag,
+        Color,
+        user: req.user.id,
+      });
       const savenote = await note.save();
       res.json(savenote);
     } catch (error) {
@@ -49,10 +56,11 @@ router.post("/addnote",
 );
 
 // Route 3 : Updating An existing Note using: PUT "/api/note/updatenote/:id". Login required
-router.put("/updatenote/:id", // "/:id"  is  parameter.its referr specific note id
+router.put(
+  "/updatenote/:id", // "/:id"  is  parameter.its referr specific note id
   fetchuser,
   async (req, res) => {
-    const { title, description, tag } = req.body;
+    const { title, description, tag, Color } = req.body;
     try {
       // Creact newNote object and asian values to newNote object.
       const newNote = {};
@@ -64,6 +72,9 @@ router.put("/updatenote/:id", // "/:id"  is  parameter.its referr specific note 
       }
       if (tag) {
         newNote.tag = tag;
+      }
+      if (Color) {
+        newNote.Color = Color;
       }
 
       // find a note witch wont to updead.
@@ -92,8 +103,7 @@ router.put("/updatenote/:id", // "/:id"  is  parameter.its referr specific note 
 );
 
 // Route 4 : Deleting An existing Note using: DELETE "/api/note/deletenote/:id". Login required
-router.delete("/deletenote/:id",
-  fetchuser, async (req, res) => {
+router.delete("/deletenote/:id", fetchuser, async (req, res) => {
   const { title, description, tag } = req.body;
   try {
     // find a note witch wont to delete.

@@ -36,16 +36,6 @@ export default function Navbar() {
       href: "/addnote",
       current: location.pathname === "/addnote" ? true : false,
     },
-    {
-      name: "Projects",
-      href: "#",
-      current: location.pathname === "/projects" ? true : false,
-    },
-    {
-      name: "Calendar",
-      href: "#",
-      current: location.pathname === "/calender" ? true : false,
-    },
   ];
 
   return (

@@ -2,6 +2,9 @@ import NoteContext from "./noteContext";
 import { useState } from "react";
 
 const NoteState = (props) => {
+  const host = "http://localhost:3001";
+  const notesApi = [];
+  const [notes, setNotes] = useState(notesApi);
   const tagColor = [
     {
       tag: "General",
@@ -37,34 +40,40 @@ const NoteState = (props) => {
     },
   ];
 
-  const notesApi = [
-    {
-      _id: "6532ba79d513e9f0e2d6cbae",
-      user: "653177662696ce1a9105a35f",
-      title: " 1st  note ",
-      description:
-        "Hear Is My First Note From This NOTEAPP.lknocnoas  amopsnmcoinso msxcoianaoind oisndonajn i iosniocnosa onosnocno ono  kljndkjcs oomlm icxosam oasondo om aomcows oaoido dowa omonawon knkjnef ikekjnonoc lkmolkmoi ls c oeoeofl; sldc dlksmoepfdmxclkm 0peopi lml ocipecmsmelkfmoeosiefoimd soemiofjoip[somdlcmesienflk l oijom[ oj io om opimoi iop o opi jopjoi io i i imi i m i  imio mom[oim[omo io iom [ oimio oi oimiomiomo oiiomoi imi i imi mi ifde kjkjno wdio oamslkdm oiwnoi mo oimoi oim omo n lkl mlkmoim omoi oi om  lmnl mk lk nml nl nl k",
-      tag: "Impotant",
-      Color: "bg-blue-300",
-      Date: "2023-10-20T17:35:53.968Z",
-      __v: 0,
-    },
-    {
-      _id: "6537c2e5169f829bd500ec5f",
-      user: "653177662696ce1a9105a35f",
-      title: " 2ND  note ",
-      description: "Hear Is My Secand Note From This NOTEAPP.",
-      tag: "General",
-      Color: "bg-red-400",
-      Date: "2023-10-24T13:13:09.384Z",
-      __v: 0,
-    },
-  ];
+  //View note toggel
+  const [isView, setIsView] = useState(false);
+  const toggleView = () => {
+    setIsView(!isView);
+  };
+  //  Fetch All  Note ( R ) //
+  const fetchNote = async () => {
+    // API call for Fetch All Note
+    const response = await fetch(`${host}/api/note/fetchallnote`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
+      },
+    });
+    const json = await response.json();
+    // Functionality to fetch A Note
+    setNotes(json);
+  };
 
-  const [notes, setNotes] = useState(notesApi);
-
-  // Add Note
-  const addNote = (title, description, tag) => {
+  //  Add Note ( C ) //
+  const addNote = async (title, description, tag, Color) => {
+    // API call for Add NOte
+    const response = await fetch(`${host}/api/note/addnote`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
+      },
+      body: JSON.stringify({ title, description, tag, Color }),
+    });
+    // Functionality to Add A Note
     const selectedTag = tagColor.find((tagData) => tagData.tag === tag);
     if (selectedTag) {
       const note = {
@@ -73,20 +82,67 @@ const NoteState = (props) => {
         title: title,
         description: description,
         tag: tag,
-        Color: selectedTag.Color,
+        Color: Color,
         Date: "2023-10-24T13:13:09.384Z",
         __v: 0,
       };
       setNotes(notes.concat(note));
     }
   };
-  // Updead Note
-  const updeadNote = () => {};
-  //Delete Note
-  const deleteNote = () => {};
+
+  // Edit note toggel
+  const [isEdit, setIsEdit] = useState(false);
+  const toggleEdit = () => {
+    setIsEdit(!isEdit);
+  };
+  //  Edit Note ( U ) //
+  const editNote = async (id, title, description, tag, Color) => {
+    //API call for Edit NOte
+    const response = await fetch(`${host}/api/note/updatenote/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
+      },
+      body: JSON.stringify({ title, description, tag, Color }),
+    });
+    // Functionality to Edit a Not
+  };
+
+  //  Delete Note ( D ) //
+  const deleteNote = async (id) => {
+    //API call for Delet NOte
+    const response = fetch(`${host}/api/note/deletenote/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
+      },
+    });
+    // Functionality to Delete a Not
+    const newDeleteNote = notes.filter((note) => {
+      return note._id !== id;
+    });
+    setNotes(newDeleteNote);
+  };
+
   return (
     <NoteContext.Provider
-      value={{ notes, setNotes, tagColor, addNote, updeadNote, deleteNote }}
+      value={{
+        tagColor,
+        toggleView,
+        isView,
+        toggleEdit,
+        isEdit,
+        notes,
+        setNotes,
+        fetchNote,
+        addNote,
+        editNote,
+        deleteNote,
+      }}
     >
       {props.children}
     </NoteContext.Provider>
