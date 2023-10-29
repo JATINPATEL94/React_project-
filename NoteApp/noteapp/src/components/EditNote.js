@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import NoteContext from "../context/notes/noteContext";
 
-const EditNote = () => {
+const EditNote = ({ note }) => {
   const context = useContext(NoteContext);
-  const { toggleEdit, isEdit, tagColor } = context;
+  const { toggleEdit, isEdit, tagColor, editNote } = context;
 
   // tag toggle
   const [tagSelected, setTagSelected] = useState(false);
@@ -20,6 +20,43 @@ const EditNote = () => {
     }
   };
 
+  // Set the initial state for editedNote when note changes
+  useEffect(() => {
+    setEditedNote({
+      title: note ? note.title : "",
+      description: note ? note.description : "",
+      tag: note ? note.tag : "",
+      Color: note ? note.Color : "",
+    });
+  }, [note]);
+  // Edit note
+  const [editedNote, setEditedNote] = useState({
+    title: "",
+    description: "",
+    tag: "",
+    Color: "",
+  });
+  // handle change in input
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedNote({
+      ...editedNote,
+      [name]: value,
+    });
+  };
+  // handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Call the editNote function to update the note
+    if (note) {
+      await editNote({
+        id: note._id,
+        ...editedNote,
+      });
+      toggleEdit();
+    }
+  };
+
   return (
     <div
       id="authentication-modal"
@@ -30,12 +67,12 @@ const EditNote = () => {
       } fixed z-50 h-full w-full pt-20 top-0 justify-center align-middle bg-transparent p-4 overflow-hidden`}
     >
       <div className="relative w-full max-w-4xl max-h-full">
-        <div className="bg-white h-fit min-w-full rounded-lg shadow dark:bg-gray-700 ">
-          {/* <!-- Close Button--> */}
+        <div className="bg-white h-fit min-w-full rounded-lg shadow dark:bg-gray-700">
+          {/* Close Button */}
           <button
             onClick={toggleEdit}
             type="button"
-            className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover-text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark-hover-bg-gray-600 dark-hover-text-white"
             data-modal-hide="authentication-modal"
           >
             <svg
@@ -55,55 +92,58 @@ const EditNote = () => {
             </svg>
             <span className="sr-only">Close modal</span>
           </button>
-          {/* Edite Note Form */}
+          {/* Edit Note Form */}
           <div className="px-6 py-6 lg:px-8">
-            <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+            <h3 className="mb-4 text-xl font-medium text-gray-900 dark-text-white">
               Edit Your Note
             </h3>
             <form className="space-y-6" action="#">
-              {/* titel */}
+              {/* title */}
               <div>
                 <label
-                  htmlFor="titel"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="e_title"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark-text-white"
                 >
-                  Titel
+                  Title
                 </label>
                 <input
                   type="text"
                   name="e_title"
-                  id="title"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  placeholder="Edite Titel"
+                  id="e_title"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-ring-blue-500 focus-border-blue-500 block w-full p-2.5 dark-bg-gray-600 dark-border-gray-500 dark-placeholder-gray-400 dark-text-white"
+                  placeholder="Edit Title"
                   required
+                  value={editedNote.title}
+                  onChange={handleInputChange}
                 />
               </div>
               {/* description */}
               <div>
                 <label
-                  htmlFor="description"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="e_description"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark-text-white"
                 >
                   Description
                 </label>
                 <textarea
-                  id="description"
+                  id="e_description"
                   name="e_description"
                   rows={5}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-ring-blue-500 focus-border-blue-500 block w-full p-2.5 dark-bg-gray-600 dark-border-gray-500 dark-placeholder-gray-400 dark-text-white"
                   required
+                  value={editedNote.description}
+                  onChange={handleInputChange}
                 />
               </div>
               {/* Select Tag */}
               <div className="flex justify-center align-middle w-fit relative">
-                {/* Droupdown Buttone */}
+                {/* Dropdown Button */}
                 <button
                   type="button"
                   onClick={toggleOpen}
-                  // disabled={tagSelected}
                   id="dropdownRadioBgHoverButton"
                   data-dropdown-toggle="dropdownRadioBgHover"
-                  className="text-white bg-transparent  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 w-max h-fit border py-2.5 text-center inline-flex items-center relative"
+                  className="text-white bg-transparent hover-bg-blue-800 focus-ring-4 focus-outline-none focus-ring-blue-300 font-medium rounded-lg text-sm px-2 w-max h-fit border py-2.5 text-center inline-flex items-center relative"
                 >
                   Select Tag
                   <svg
@@ -122,22 +162,22 @@ const EditNote = () => {
                     />
                   </svg>
                 </button>
-                {/* Dropdown menu  */}
+                {/* Dropdown menu */}
                 <div
                   id="dropdownRadioBgHover"
                   className={`${
                     isOpen ? "block" : "hidden"
-                  } absolute left-28 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
+                  } absolute left-28 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark-bg-gray-700 dark-divide-gray-600`}
                 >
                   {/* Dropdown List */}
                   <ul
-                    className="p-3 max-h-40 overflow-y-scroll space-y-1 text-sm text-gray-700 dark:text-gray-200"
+                    className="p-3 max-h-40 overflow-y-scroll space-y-1 text-sm text-gray-700 dark-text-gray-200"
                     aria-labelledby="dropdownRadioBgHoverButton"
                   >
                     {/* tag from context */}
                     {tagColor.map((tagData, index) => (
                       <li key={index}>
-                        <div className="flex items-center justify-start p-2 rounded hover:bg-gray-100 dark:hover-bg-gray-600">
+                        <div className="flex items-center justify-start p-2 rounded hover-bg-gray-100 dark-hover-bg-gray-600">
                           <input
                             onClick={onChange}
                             id={`default-radio-${index}`}
@@ -147,11 +187,11 @@ const EditNote = () => {
                             data-color={
                               tagData.Color
                             } /* Assign Color into a data attribute */
-                            className="w-4 h-4   bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            className="w-4 h-4   bg-gray-100 border-gray-300 focus-ring-blue-500 dark-focus-ring-blue-600 dark-ring-offset-gray-700 dark-focus-ring-offset-gray-700 focus-ring-2 dark-bg-gray-600 dark-border-gray-500"
                           />
                           <label
                             htmlFor={`default-radio-${index}`}
-                            className={`${tagData.Color}w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300`}
+                            className={`${tagData.Color} w-full ml-2 text-sm font-medium text-gray-900 rounded dark-text-gray-300`}
                           >
                             {tagData.tag}
                           </label>
@@ -161,7 +201,7 @@ const EditNote = () => {
                   </ul>
                 </div>
               </div>
-              {/* save or cancle Buttone */}
+              {/* save or cancel Button */}
               <div className="mt-6 flex items-center justify-end gap-x-6">
                 <button
                   onClick={toggleEdit}
@@ -171,10 +211,10 @@ const EditNote = () => {
                   Cancel
                 </button>
                 <button
-                  // onClick={handleClick}
+                  onClick={handleSubmit}
                   type="submit"
                   disabled={!tagSelected}
-                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover-bg-indigo-500 focus-visible-outline focus-visible-outline-2 focus-visible-outline-offset-2 focus-visible-outline-indigo-600"
                 >
                   Save
                 </button>

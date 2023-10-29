@@ -45,20 +45,10 @@ const NoteState = (props) => {
   const toggleView = () => {
     setIsView(!isView);
   };
-  //  Fetch All  Note ( R ) //
-  const fetchNote = async () => {
-    // API call for Fetch All Note
-    const response = await fetch(`${host}/api/note/fetchallnote`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
-      },
-    });
-    const json = await response.json();
-    // Functionality to fetch A Note
-    setNotes(json);
+  // Edit note toggel
+  const [isEdit, setIsEdit] = useState(false);
+  const toggleEdit = () => {
+    setIsEdit(!isEdit);
   };
 
   //  Add Note ( C ) //
@@ -90,24 +80,60 @@ const NoteState = (props) => {
     }
   };
 
-  // Edit note toggel
-  const [isEdit, setIsEdit] = useState(false);
-  const toggleEdit = () => {
-    setIsEdit(!isEdit);
-  };
-  //  Edit Note ( U ) //
-  const editNote = async (id, title, description, tag, Color) => {
-    //API call for Edit NOte
-    const response = await fetch(`${host}/api/note/updatenote/${id}`, {
-      method: "PUT",
+  //  Fetch All  Note ( R ) //
+  const fetchNote = async () => {
+    // API call for Fetch All Note
+    const response = await fetch(`${host}/api/note/fetchallnote`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         "auth-token":
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
       },
-      body: JSON.stringify({ title, description, tag, Color }),
     });
-    // Functionality to Edit a Not
+    const json = await response.json();
+    // Functionality to fetch A Note
+    setNotes(json);
+  };
+
+  //  Edit Note ( U ) //
+  const editNote = async (updatedData) => {
+    const { id, title, description, tag, Color } = updatedData;
+    try {
+      //API call for Edit NOte
+      const response = await fetch(`${host}/api/note/updatenote/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token":
+            "eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
+        },
+        body: JSON.stringify({ id, title, description, tag, Color }),
+      });
+      // Functionality to Edit a Not
+      if (response.status === 200) {
+        updateNoteInContext(id, title, description, tag, Color);
+      } else {
+        console.error("Failed to update note");
+      }
+    } catch (error) {
+      console.error("Error updating note:", error);
+    }
+  };
+  const updateNoteInContext = (id, title, description, tag, Color) => {
+    const updatedNotes = notes.map((note) => {
+      if (note._id === id) {
+        return {
+          ...note,
+          title,
+          description,
+          tag,
+          Color,
+        };
+      }
+      return note;
+    });
+    setNotes(updatedNotes);
   };
 
   //  Delete Note ( D ) //

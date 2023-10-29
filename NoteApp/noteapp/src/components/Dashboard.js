@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import GroupButtons from "./GroupButtons";
 import Filter from "./Filter";
 import NoteContext from "../context/notes/noteContext";
@@ -8,15 +8,20 @@ import ViewNote from "./ViewNote";
 const Dashboard = () => {
   const context = useContext(NoteContext);
   const { notes, fetchNote } = context;
+  // State to store the selected note
+  const [selectedNote, setSelectedNote] = useState(null);
+  const handleEditClick = (note) => {
+    setSelectedNote(note);
+  };
   useEffect(() => {
     fetchNote();
   }, []);
 
   return (
     <>
-      <ViewNote />
+      <ViewNote note={selectedNote} />
+      <EditNote note={selectedNote} />
       <Filter />
-      <EditNote />
       <div className="min-h-screen  overflow-x-hidden  bg-gray-950 p-10 2xl:p-20">
         <div className="grid grid-cols-1 md:grid-cols-2  grid-flow-row gap-4  xl:grid-cols-4">
           {/* Context Note */}
@@ -67,7 +72,10 @@ const Dashboard = () => {
                   {/* Edit Section */}
                   <div className="h-8 absolute bottom-0 right-0 overflow-hidden">
                     <div className="hidden group-hover:block float-right self-end">
-                      <GroupButtons note_id={note._id} />
+                      <GroupButtons
+                        note_id={note._id}
+                        onEditClick={() => handleEditClick(note)}
+                      />
                     </div>
                   </div>
                 </div>

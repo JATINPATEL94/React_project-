@@ -1,23 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NoteContext from "../context/notes/noteContext";
-const content = {
-  title: "JATIN PATEL",
-  descripcion:
-    "Hello, My Name Is Jatin Patel. And I Am From Gujarat,Gandhinagar.I am Full Stack Devloper.",
-  tag: "General",
-  Color: "bg-blue-300",
-};
-const ViewNote = () => {
+
+const ViewNote = ({ note }) => {
   const context = useContext(NoteContext);
   const { toggleView, isView } = context;
 
+  const [viewNote, setViewNote] = useState({
+    title: "",
+    description: "",
+    tag: "",
+    Color: "",
+  });
+  useEffect(() => {
+    setViewNote({
+      title: note ? note.title : "something went wrong",
+      description: note
+        ? note.description
+        : "please try again or refresh the page.",
+      tag: note ? note.tag : "General",
+      Color: note ? note.Color : "bg-blue-300",
+    });
+  }, [note]);
   return (
     <div
       className={`${
         isView ? "flex" : "hidden"
       } fixed z-50 h-full w-full pt-20 justify-center align-middl p-4 overflow-hidden backdrop-blur-sm`}
     >
-      <div className="h-96  lg:w-1/2 rounded-lg overflow-hidden  group relative bg-blue-300 border-2 md:border-4">
+      <div
+        className={`${viewNote.Color} h-96  lg:w-1/2 rounded-lg overflow-hidden  group relative border-2 md:border-4`}
+      >
         {/* DATE And Tag Section */}
         <div className="flex justify-between bg-gray-200 pr-2 h-8 w-full">
           {/* date */}
@@ -36,15 +48,15 @@ const ViewNote = () => {
           {/* tag */}
           <div className="flex items-center text-sm 1nt-medium text-gray-900 dark:text-gray-900">
             <span
-              className={`flex w-2.5 h-2.5  ${content.Color} rounded-full mr-1.5 flex-shrink-0`}
+              className={`flex w-2.5 h-2.5  ${viewNote.Color} rounded-full mr-1.5 flex-shrink-0`}
             ></span>
-            {content.tag}
+            {viewNote.tag}
           </div>
         </div>
         {/* Note Titel Descripcion  */}
         <div className="p-3 overflow-hidden">
-          <h3 className="font-bold"> {content.title}</h3>
-          <h5>{content.descripcion}</h5>
+          <h3 className="font-bold"> {viewNote.title}</h3>
+          <h5>{viewNote.description}</h5>
         </div>
         {/* Cancel Button */}
         <div className="h-8 absolute bottom-1 right-1">

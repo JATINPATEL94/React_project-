@@ -4,14 +4,15 @@ import NoteContext from "../context/notes/noteContext";
 const GroupButtons = (props) => {
   const context = useContext(NoteContext);
   const { toggleEdit, toggleView, deleteNote } = context;
-  const { note_id } = props; // for geting Not id from Dashboard to use in delete
+  const { note_id, note, onEditClick } = props; // for geting Not_id and note from Dashboard to use in delete and update note
   return (
     <div>
       <div className="inline-flex items-center rounded-md shadow-sm">
         {/* Edit */}
         <button
           onClick={() => {
-            toggleEdit(note_id);
+            toggleEdit(note);
+            onEditClick();
           }}
           data-modal-target="authentication-modal"
           data-modal-toggle="authentication-modal"
@@ -36,7 +37,10 @@ const GroupButtons = (props) => {
         </button>
         {/* Show */}
         <button
-          onClick={toggleView}
+          onClick={() => {
+            toggleView(note);
+            onEditClick();
+          }}
           className="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border-y border-slate-200 font-medium px-4 py-2 inline-flex space-x-1 items-center"
         >
           <span>
