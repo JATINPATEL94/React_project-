@@ -11,16 +11,16 @@ const EditNote = ({ note }) => {
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
-  const onChange = (e) => {
-    const { name } = e.target;
-    // toggle tags button
-    if (name === "e_tag") {
-      setIsOpen(!isOpen);
-      setTagSelected(true);
-    }
-  };
 
   // Set the initial state for editedNote when note changes
+  const [editedNote, setEditedNote] = useState({
+    title: "",
+    description: "",
+    tag: "",
+    Color: "",
+  });
+
+  // pre-edited note
   useEffect(() => {
     setEditedNote({
       title: note ? note.title : "",
@@ -29,21 +29,29 @@ const EditNote = ({ note }) => {
       Color: note ? note.Color : "",
     });
   }, [note]);
-  // Edit note
-  const [editedNote, setEditedNote] = useState({
-    title: "",
-    description: "",
-    tag: "",
-    Color: "",
-  });
+
   // handle change in input
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedNote({
-      ...editedNote,
-      [name]: value,
-    });
+    const { name, value, type } = e.target;
+    // toggle tags button
+    if (name === "tag") {
+      setIsOpen(!isOpen);
+      setTagSelected(true);
+    }
+    // Create a copy of the current editedNote state
+    const updatedNote = { ...editedNote };
+    // Handle different input types separately
+    if (name === "tag" && type === "radio") {
+      const color = e.target.getAttribute("data-color");
+      updatedNote.tag = value;
+      updatedNote.Color = color;
+    } else {
+      updatedNote[name] = value;
+    }
+    // Update the editedNote state with the modified copy
+    setEditedNote(updatedNote);
   };
+
   // handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,15 +109,15 @@ const EditNote = ({ note }) => {
               {/* title */}
               <div>
                 <label
-                  htmlFor="e_title"
+                  htmlFor="title"
                   className="block mb-2 text-sm font-medium text-gray-900 dark-text-white"
                 >
                   Title
                 </label>
                 <input
                   type="text"
-                  name="e_title"
-                  id="e_title"
+                  name="title"
+                  id="title"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-ring-blue-500 focus-border-blue-500 block w-full p-2.5 dark-bg-gray-600 dark-border-gray-500 dark-placeholder-gray-400 dark-text-white"
                   placeholder="Edit Title"
                   required
@@ -120,14 +128,14 @@ const EditNote = ({ note }) => {
               {/* description */}
               <div>
                 <label
-                  htmlFor="e_description"
+                  htmlFor="description"
                   className="block mb-2 text-sm font-medium text-gray-900 dark-text-white"
                 >
                   Description
                 </label>
                 <textarea
-                  id="e_description"
-                  name="e_description"
+                  id="description"
+                  name="description"
                   rows={5}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-ring-blue-500 focus-border-blue-500 block w-full p-2.5 dark-bg-gray-600 dark-border-gray-500 dark-placeholder-gray-400 dark-text-white"
                   required
@@ -179,19 +187,20 @@ const EditNote = ({ note }) => {
                       <li key={index}>
                         <div className="flex items-center justify-start p-2 rounded hover-bg-gray-100 dark-hover-bg-gray-600">
                           <input
-                            onClick={onChange}
+                            onChange={handleInputChange}
                             id={`default-radio-${index}`}
                             type="radio"
                             value={tagData.tag}
-                            name="e_tag"
+                            name="tag"
+                            checked={tagData.tag === editedNote.tag}
                             data-color={
                               tagData.Color
                             } /* Assign Color into a data attribute */
-                            className="w-4 h-4   bg-gray-100 border-gray-300 focus-ring-blue-500 dark-focus-ring-blue-600 dark-ring-offset-gray-700 dark-focus-ring-offset-gray-700 focus-ring-2 dark-bg-gray-600 dark-border-gray-500"
+                            className="w-4 h-4 bg-gray-100 border-gray-300 focus-ring-blue-500 dark-focus-ring-blue-600 dark-ring-offset-gray-700 dark-focus-ring-offset-gray-700 focus-ring-2 dark-bg-gray-600 dark-border-gray-500"
                           />
                           <label
                             htmlFor={`default-radio-${index}`}
-                            className={`${tagData.Color} w-full ml-2 text-sm font-medium text-gray-900 rounded dark-text-gray-300`}
+                            className={`${tagData.Color} pl-2 w-full ml-2 text-sm font-medium text-gray-900 rounded dark-text-gray-300`}
                           >
                             {tagData.tag}
                           </label>

@@ -106,8 +106,8 @@ const NoteState = (props) => {
         headers: {
           "Content-Type": "application/json",
           "auth-token":
-            "eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
-        },
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
+      },
         body: JSON.stringify({ id, title, description, tag, Color }),
       });
       // Functionality to Edit a Not
