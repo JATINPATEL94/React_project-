@@ -22,12 +22,15 @@ const EditNote = ({ note }) => {
 
   // pre-edited note
   useEffect(() => {
-    setEditedNote({
-      title: note ? note.title : "",
-      description: note ? note.description : "",
-      tag: note ? note.tag : "",
-      Color: note ? note.Color : "",
-    });
+    setEditedNote(
+      {
+        title: note ? note.title : "",
+        description: note ? note.description : "",
+        tag: note ? note.tag : "",
+        Color: note ? note.Color : "",
+      },
+      setTagSelected(true)
+    );
   }, [note]);
 
   // handle change in input
@@ -102,7 +105,7 @@ const EditNote = ({ note }) => {
           </button>
           {/* Edit Note Form */}
           <div className="px-6 py-6 lg:px-8">
-            <h3 className="mb-4 text-xl font-medium text-gray-900 dark-text-white">
+            <h3 className="mb-4 text-xl font-medium text-gray-100 dark-text-white">
               Edit Your Note
             </h3>
             <form className="space-y-6" action="#">
@@ -110,7 +113,7 @@ const EditNote = ({ note }) => {
               <div>
                 <label
                   htmlFor="title"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark-text-white"
+                  className="block mb-2 text-sm font-medium text-gray-100 dark-text-white"
                 >
                   Title
                 </label>
@@ -129,7 +132,7 @@ const EditNote = ({ note }) => {
               <div>
                 <label
                   htmlFor="description"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark-text-white"
+                  className="block mb-2 text-sm font-medium text-gray-100 dark-text-white"
                 >
                   Description
                 </label>
@@ -222,7 +225,11 @@ const EditNote = ({ note }) => {
                 <button
                   onClick={handleSubmit}
                   type="submit"
-                  disabled={!tagSelected}
+                  disabled={
+                    !tagSelected ||
+                    editedNote.title.length < 5 ||
+                    editedNote.description.length < 5
+                  }
                   className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover-bg-indigo-500 focus-visible-outline focus-visible-outline-2 focus-visible-outline-offset-2 focus-visible-outline-indigo-600"
                 >
                   Save

@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import NoteContext from "../context/notes/noteContext";
+import { useNavigate } from "react-router-dom";
 
 const AddNote = () => {
   const context = useContext(NoteContext);
   const { addNote, tagColor } = context;
-  const [msg, setMsg] = useState(false);
   // toggle tag button
   const [tagSelected, setTagSelected] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -42,43 +41,16 @@ const AddNote = () => {
     }
   };
   // submit handle
+  const navigate = useNavigate();
   const handleClick = (e) => {
     e.preventDefault();
     addNote(note.title, note.description, note.tag, note.Color);
-    setMsg(true);
+    navigate("/");
   };
   return (
     <div className="min-h-screen  overflow-x-hidden  bg-gray-950 p-10 flex justify-center align-middle 2xl:p-20">
       <form className="md:w-1/2">
         <div className="space-y-12  z-50">
-          {/* Success  msg */}
-          {msg === true ? (
-            <div className="rounded-md bg-[#C4F9E2] p-4">
-              <p className="flex items-center text-sm font-medium text-[#004434]">
-                <span className="pr-3">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="10" cy="10" r="10" fill="#00B078"></circle>
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M14.1203 6.78954C14.3865 7.05581 14.3865 7.48751 14.1203 7.75378L9.12026 12.7538C8.85399 13.02 8.42229 13.02 8.15602 12.7538L5.88329 10.4811C5.61703 10.2148 5.61703 9.78308 5.88329 9.51682C6.14956 9.25055 6.58126 9.25055 6.84753 9.51682L8.63814 11.3074L13.156 6.78954C13.4223 6.52328 13.854 6.52328 14.1203 6.78954Z"
-                      fill="white"
-                    ></path>
-                  </svg>
-                </span>
-                Your Note has been added successfully{".  "}
-                <Link to="/">View Hear</Link>
-              </p>
-            </div>
-          ) : (
-            <></>
-          )}
           {/* Note Section */}
           <div className="border-b border-gray-100/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-100">
@@ -106,6 +78,8 @@ const AddNote = () => {
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-100 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="Title Must Be 5 Characters or Longer"
                       onChange={onChange}
+                      minLength={5}
+                      required
                     />
                   </div>
                 </div>
@@ -123,6 +97,8 @@ const AddNote = () => {
                     id="description"
                     name="description"
                     rows={5}
+                    minLength={5}
+                    required
                     className="block w-full p-2 rounded-md border-0 py-1.5 bg-transparent text-gray-100  placeholder:text-gray-400 shadow-sm ring-1 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     defaultValue={""}
                     placeholder="Minimum 5 Characters Required"

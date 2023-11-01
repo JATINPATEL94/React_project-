@@ -21,6 +21,12 @@ const ViewNote = ({ note }) => {
       Color: note ? note.Color : "bg-blue-300",
     });
   }, [note]);
+  const originalDate = note ? note.Date : 20052003;
+  const dateObject = new Date(originalDate);
+  const day = dateObject.getUTCDate().toString().padStart(2, "0");
+  const month = (dateObject.getUTCMonth() + 1).toString().padStart(2, "0");
+  const year = dateObject.getUTCFullYear().toString().slice(-2);
+  const convertedDate = `${day}-${month}-${year}`;
   return (
     <div
       className={`${
@@ -43,7 +49,7 @@ const ViewNote = ({ note }) => {
             >
               <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
             </svg>
-            Last Updead: 05:30PM
+            Created on : {convertedDate}
           </h6>
           {/* tag */}
           <div className="flex items-center text-sm 1nt-medium text-gray-900 dark:text-gray-900">

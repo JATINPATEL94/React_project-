@@ -3,8 +3,24 @@ import NoteContext from "../context/notes/noteContext";
 
 const GroupButtons = (props) => {
   const context = useContext(NoteContext);
-  const { toggleEdit, toggleView, deleteNote } = context;
+  const { toggleEdit, toggleView, deleteNote, setAlertMsg } = context;
   const { note_id, note, onEditClick } = props; // for geting Not_id and note from Dashboard to use in delete and update note
+  const copyNoteToClipboard = () => {
+    const noteContent = `${note.title}\n${note.description}`;
+    const textArea = document.createElement("textarea");
+    textArea.value = noteContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    textArea.setSelectionRange(0, 99999);
+    // Copy the selected text to the clipboard
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    setAlertMsg({
+      alertTitle: "Abracadabra!",
+      msg: "Note copied to clipboard",
+    });
+  };
+
   return (
     <div>
       <div className="inline-flex items-center rounded-md shadow-sm">
@@ -90,7 +106,10 @@ const GroupButtons = (props) => {
           </span>
         </button>
         {/* Copy */}
-        <button className="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200  font-medium px-4 py-2 inline-flex space-x-1 items-center">
+        <button
+          onClick={copyNoteToClipboard}
+          className="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200  font-medium px-4 py-2 inline-flex space-x-1 items-center"
+        >
           <svg
             className="w-4 h-4 mx-auto"
             aria-hidden="true"

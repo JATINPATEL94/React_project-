@@ -2,9 +2,12 @@ import NoteContext from "./noteContext";
 import { useState } from "react";
 
 const NoteState = (props) => {
-  const host = "http://localhost:3001";
-  const notesApi = [];
-  const [notes, setNotes] = useState(notesApi);
+  const host = "http://192.168.2.100:3001";
+  const [notes, setNotes] = useState([]);
+  const [alertMsg, setAlertMsg] = useState({
+    alertTitle: "Hi",
+    msg: "Welcome to NOTEAPP - Your Note-Taking Companion",
+  });
   const tagColor = [
     {
       tag: "General",
@@ -39,7 +42,8 @@ const NoteState = (props) => {
       Color: "bg-pink-300",
     },
   ];
-
+  // filter note
+  const [selectedTag, setSelectedTag] = useState(null);
   //View note toggel
   const [isView, setIsView] = useState(false);
   const toggleView = () => {
@@ -63,6 +67,7 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tag, Color }),
     });
+    console.log(response);
     // Functionality to Add A Note
     const selectedTag = tagColor.find((tagData) => tagData.tag === tag);
     if (selectedTag) {
@@ -77,6 +82,10 @@ const NoteState = (props) => {
         __v: 0,
       };
       setNotes(notes.concat(note));
+      setAlertMsg({
+        alertTitle: "Success",
+        msg: "Your Note Has Been Added successfully",
+      });
     }
   };
 
@@ -94,6 +103,10 @@ const NoteState = (props) => {
     const json = await response.json();
     // Functionality to fetch A Note
     setNotes(json);
+    setAlertMsg({
+      alertTitle: "sorry",
+      msg: "Sorry, Please Try Again!.",
+    });
   };
 
   //  Edit Note ( U ) //
@@ -106,8 +119,8 @@ const NoteState = (props) => {
         headers: {
           "Content-Type": "application/json",
           "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
-      },
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
+        },
         body: JSON.stringify({ id, title, description, tag, Color }),
       });
       // Functionality to Edit a Not
@@ -134,6 +147,10 @@ const NoteState = (props) => {
       return note;
     });
     setNotes(updatedNotes);
+    setAlertMsg({
+      alertTitle: "Success",
+      msg: "Your Note Has Been Updated successfully",
+    });
   };
 
   //  Delete Note ( D ) //
@@ -147,16 +164,25 @@ const NoteState = (props) => {
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUzMTc3NjYyNjk2Y2UxYTkxMDVhMzVmIn0sImlhdCI6MTY5Nzc0MDY0Nn0.AWKw8MXKGnarIcLsFS34msftQuxHKY-3pmn8E-Ytf9c",
       },
     });
+    console.log(response);
     // Functionality to Delete a Not
     const newDeleteNote = notes.filter((note) => {
       return note._id !== id;
     });
     setNotes(newDeleteNote);
+    setAlertMsg({
+      alertTitle: "Success",
+      msg: "Your Note Has Been Delete successfully",
+    });
   };
 
   return (
     <NoteContext.Provider
       value={{
+        alertMsg,
+        setAlertMsg,
+        selectedTag,
+        setSelectedTag,
         tagColor,
         toggleView,
         isView,
