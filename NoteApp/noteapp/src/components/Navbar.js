@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../images/logo-1.png";
@@ -12,9 +12,9 @@ const user = {
 };
 
 const userNavigation = [
-  { name: "Your Profile", href: "/profile" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Your Profile" },
+  { name: "Settings" },
+  { name: "Signout" },
 ];
 
 function classNames(...classes) {
@@ -24,7 +24,11 @@ function classNames(...classes) {
 export default function Navbar() {
   let location = useLocation();
   useEffect(() => {}, [location]);
-
+  const navigate = useNavigate();
+  const handleclick = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   const navigation = [
     {
       name: "Dashboard",
@@ -113,15 +117,16 @@ export default function Navbar() {
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
-                                  <Link
-                                    to={item.href}
+                                  <button
+                                    key={item.name}
+                                    onClick={handleclick}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
                                       "block px-4 py-2 text-sm text-gray-700"
                                     )}
                                   >
                                     {item.name}
-                                  </Link>
+                                  </button>
                                 )}
                               </Menu.Item>
                             ))}
@@ -198,14 +203,13 @@ export default function Navbar() {
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     {userNavigation.map((item) => (
-                      <Disclosure.Button
+                      <button
                         key={item.name}
-                        as={Link}
-                        to={item.href}
+                        onClick={handleclick}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                       >
                         {item.name}
-                      </Disclosure.Button>
+                      </button>
                     ))}
                   </div>
                 </div>

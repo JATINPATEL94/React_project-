@@ -4,7 +4,7 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 const UserProfile = () => {
   return (
     <div className="min-h-screen  overflow-x-hidden  bg-gray-950 p-10 2xl:p-20 flex align-middle justify-center ">
-      <form className="md:w-1/2"> 
+      <form className="md:w-1/2">
         <div className="space-y-12 ">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-100">

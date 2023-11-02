@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 import AddNote from "./components/AddNote";
 import UserProfile from "./components/UserProfile";
 import NoteState from "./context/notes/NoteState";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/addnote" element={<AddNote />} />
             <Route path="/profile" element={<UserProfile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
           </Routes>
           <Footer />
         </div>

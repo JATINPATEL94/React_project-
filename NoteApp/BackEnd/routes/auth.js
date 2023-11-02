@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-const fetchuser = require("../middleware/fetchuser")
+const fetchuser = require("../middleware/fetchuser");
 const { validationResult, body } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -64,14 +64,15 @@ router.post(
   }
 );
 
-// Route 2 :Authenticate a User using: POST "/api/auth/login". Login required
+// Route 2 :Authenticate a User using: POST "/api/auth/login". Registration required
 router.post(
   "/login",
   [
-    body("email", "Plase Enter Valid Email").isEmail(),
+    body("email", "Please Enter Valid Email").isEmail(),
     body("password", "Password cannot Be Blank").exists(),
   ],
   async (req, res) => {
+    let success = false;
     // if any error then retun bad request and error.
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -79,34 +80,36 @@ router.post(
     }
 
     // verify User with Email and Password.
-
     const { email, password } = req.body; // its login email and password.
 
     try {
       //cheking emiail id correct or not.
       const user = await User.findOne({ email });
       if (!user) {
+        success = false;
         return res
           .status(400)
           .json({ error: "Please Enter Correct Username And Password" });
       }
-
       // cheking password is correct for this email id.
       const passwordcompare = await bcrypt.compare(password, user.password);
       if (!passwordcompare) {
-        return res
-          .status(400)
-          .json({ error: "Please Enter Correct Username And Password" });
+        success = false;
+        return res.status(400).json({
+          success,
+          error: "Please Enter Correct Username And Password",
+        });
       }
 
-      //Get user auth tokon if user emial and password is right.
+      // Get user auth token if the user email and password are correct.
       const data = {
         user: {
           id: user.id,
         },
       };
       const token = jwt.sign(data, JWT_SECRET);
-      res.json({ token });
+      success = true;
+      res.json({ success, token });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("some internal server error occured");
@@ -116,12 +119,13 @@ router.post(
 
 // Route 3 :Get Logdin User Details  using: POST "/api/auth/getuser". Login required
 
-router.post("/getuser", fetchuser ,async (req, res) => { // fetchuser is Middleware 
-  
+router.post("/getuser", fetchuser, async (req, res) => {
+  // fetchuser is Middleware
+
   try {
-    const userid = req.user.id;   // req.user is come from fetchuser middleware.
+    const userid = req.user.id; // req.user is come from fetchuser middleware.
     const user = await User.findById(userid).select("-password");
-    res.send(user)
+    res.send(user);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("some internal server error occured");

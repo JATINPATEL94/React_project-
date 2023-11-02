@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import GroupButtons from "./GroupButtons";
 import Filter from "./Filter";
 import NoteContext from "../context/notes/noteContext";
@@ -7,6 +8,7 @@ import ViewNote from "./ViewNote";
 import Alert from "./Alert";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const context = useContext(NoteContext);
   const { notes, fetchNote, selectedTag } = context;
   // Stat to store the selected current note
@@ -15,7 +17,11 @@ const Dashboard = () => {
     setSelectedNote(note);
   };
   useEffect(() => {
-    fetchNote();
+    if (localStorage.getItem("token")) {
+      fetchNote();
+    } else {
+      navigate("/login");
+    }
   }, []);
 
   return (
