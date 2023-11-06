@@ -80,8 +80,8 @@ const Dashboard = () => {
                       <h5>{note.description}</h5>
                     </div>
                     {/* Edit Section */}
-                    <div className="h-8 absolute bottom-0 right-0 overflow-hidden">
-                      <div className="hidden group-hover:block float-right self-end">
+                    <div className="h-8 absolute bottom-0 right-0 overflow-hiddenc">
+                      <div className="md:hidden group-hover:block float-right self-end">
                         <GroupButtons
                           note_id={note._id}
                           note={note}

@@ -8,7 +8,7 @@ import logo from "../images/logo-1.png";
 const Login = () => {
   const navigate = useNavigate();
   const context = useContext(NoteContext);
-  const { setAlertMsg } = context;
+  const { setAlertMsg, setUserLogin } = context;
   // Set the initial state for SignUp
   const [logingData, setLoginData] = useState({ email: "", password: "" });
   // handle inputs
@@ -32,6 +32,8 @@ const Login = () => {
     const json = await response.json();
     if (json.success) {
       localStorage.setItem("token", json.token);
+      localStorage.setItem("user", JSON.stringify(json.user));
+      setUserLogin(true);
       navigate("/");
       // alert msg
       setTimeout(() => {

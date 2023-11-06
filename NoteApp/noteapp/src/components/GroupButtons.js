@@ -121,7 +121,6 @@ const GroupButtons = (props) => {
             <path d="M11.066 4H7v5a2 2 0 0 1-2 2H0v7a1.969 1.969 0 0 0 1.933 2h9.133A1.97 1.97 0 0 0 13 18V6a1.97 1.97 0 0 0-1.934-2Z" />
           </svg>
           <span className="absolute block mb-px text-sm font-medium -translate-y-1/2 -left-14 top-1/2">
-            Copy
           </span>
         </button>
       </div>

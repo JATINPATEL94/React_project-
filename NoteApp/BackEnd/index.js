@@ -1,18 +1,18 @@
 const connectToMongo = require("./db");
-const express = require('express')
-const cors = require('cors')
+const express = require("express");
+const cors = require("cors");
 
 connectToMongo();
-const app = express()
-const port = 3001
+const app = express();
+const port = 3001;
 
-app.use(cors())
-app.use(express.json()) // app.use is a middleware for access jsone 
+app.use(cors());
+app.use(express.json()); // app.use is a middleware for access jsone
 
 // Available Routes
-app.use('/api/auth', require('./routes/auth'))
-app.use('/api/note', require('./routes/note'))
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/note", require("./routes/note"));
 
 app.listen(port, () => {
-  console.log(`NOTEAPP Backend listening on port http://localhost:${port}`)
-})
+  console.log(`NOTEAPP Backend listening on port http://localhost:${port}`);
+});

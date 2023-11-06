@@ -3,6 +3,9 @@ import { useState } from "react";
 
 const NoteState = (props) => {
   const host = "http://192.168.2.100:3001";
+  // status chek if user login or not for navabar
+  const [userLogin, setUserLogin] = useState(false);
+  // for notes
   const [notes, setNotes] = useState([]);
   // alert msg
   const [alertMsg, setAlertMsg] = useState({
@@ -176,6 +179,8 @@ const NoteState = (props) => {
   return (
     <NoteContext.Provider
       value={{
+        userLogin,
+        setUserLogin,
         alertMsg,
         setAlertMsg,
         selectedTag,

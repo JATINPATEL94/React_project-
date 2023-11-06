@@ -100,7 +100,6 @@ router.post(
           error: "Please Enter Correct Username And Password",
         });
       }
-
       // Get user auth token if the user email and password are correct.
       const data = {
         user: {
@@ -109,7 +108,7 @@ router.post(
       };
       const token = jwt.sign(data, JWT_SECRET);
       success = true;
-      res.json({ success, token });
+      res.json({ success, token, user });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("some internal server error occured");
