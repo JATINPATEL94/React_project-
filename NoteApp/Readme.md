@@ -6,6 +6,9 @@ npm init
 package name: noteapp-backend
 description:  noteapp- Your Notes in the Cloud
 
+<!-- Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env -->
+npm install dotenv
+
 <!-- install Mongoose. is an Object Data Modeling (ODM) library for MongoDB and Node.js -->
 npm i mongoose
 
