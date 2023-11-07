@@ -2,11 +2,13 @@ import NoteContext from "./noteContext";
 import { useState } from "react";
 
 const NoteState = (props) => {
-  const host = "http://192.168.2.100:3001";
+  // const host = "http://192.168.2.100:3001";
+  const host = "https://reactproject-production.up.railway.app";
   // status chek if user login or not for navabar
-  const [userLogin, setUserLogin] = useState(false);
+  const [userLogin, setUserLogin] = useState(localStorage.getItem("token") ? true : false);
   // for notes
   const [notes, setNotes] = useState([]);
+
   // alert msg
   const [alertMsg, setAlertMsg] = useState({
     alertTitle: "Hi",

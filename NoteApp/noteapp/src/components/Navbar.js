@@ -4,7 +4,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import NoteContext from "../context/notes/noteContext";
 import logo from "../images/logo-1.png";
-console.log(JSON.parse(localStorage.getItem("user")).name);
+
 var user = {
   name: localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")).name
@@ -28,10 +28,13 @@ function classNames(...classes) {
 export default function Navbar() {
   const context = useContext(NoteContext);
   const { userLogin, setUserLogin } = context;
-  setUserLogin(localStorage.getItem("token") ? true : false);
   let location = useLocation();
   useEffect(() => {}, [location]);
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    setUserLogin(localStorage.getItem("token") ? true : false);
+  }, []);
   const handleclick = (e) => {
     if (e === "Signout") {
       localStorage.removeItem("token");
