@@ -1,10 +1,9 @@
-import { Fragment, useEffect, useContext } from "react";
+import React, { Fragment, useEffect, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import NoteContext from "../context/notes/noteContext";
 import logo from "../images/logo-1.png";
-
 console.log(JSON.parse(localStorage.getItem("user")).name);
 var user = {
   name: localStorage.getItem("user")
