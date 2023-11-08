@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import NoteContext from "../context/notes/noteContext";
 import { useNavigate } from "react-router-dom";
 import Alert from "./Alert";
@@ -19,16 +20,19 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // call API
-    const response = await fetch("https://reactproject-production.up.railway.app/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: logingData.email,
-        password: logingData.password,
-      }),
-    });
+    const response = await fetch(
+      "https://reactproject-production.up.railway.app/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: logingData.email,
+          password: logingData.password,
+        }),
+      }
+    );
     const json = await response.json();
     if (json.success) {
       localStorage.setItem("token", json.token);
@@ -110,12 +114,12 @@ const Login = () => {
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don't have an account yet?{" "}
-                  <a
-                    href="/signup"
+                  <Link
+                    to="/signup"
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Sign up
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>

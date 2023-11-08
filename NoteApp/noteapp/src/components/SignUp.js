@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Link } from 'react-router-dom';
 import NoteContext from "../context/notes/noteContext";
 import { useNavigate } from "react-router-dom";
 import demo from "../images/demo-1.png";
@@ -126,12 +127,12 @@ const SignUp = () => {
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already Have Account{" "}
-                  <a
-                    href="/login"
+                  <Link
+                    to="/login"
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Login Hear
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>
